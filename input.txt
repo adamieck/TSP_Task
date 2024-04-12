@@ -1,62 +1,4 @@
-const Graph = require('./Graph.js');
-function getMinValue(map, visited) {
-    let minValue = Infinity;
-    let minKey = null;
-
-    for (let [key, value] of map) {
-        if (visited.has(key)){
-            continue;
-        }
-        if (value < minValue) {
-            minValue = value;
-            minKey = key;
-        }
-    }
-
-    return { key: minKey, value: minValue };
-}
-
-function findShortestPath(graph, start) {
-    const cities = Array.from(graph.nodes.keys());
-    const visited = new Set();
-    let minutes = 0;
-    let currentCity = start;
-
-    while(!(visited.size === cities.length)) {
-        visited.add(currentCity);
-        const minNeighbor = getMinValue(graph.getNeighbors(currentCity), visited);
-        console.log(minNeighbor);
-        if(minNeighbor.key)
-        {
-            minutes += minNeighbor.value;
-            visited.add(minNeighbor.key);
-            currentCity = minNeighbor.key;
-        }
-        console.log(minutes);
-
-    }
-    minutes+= graph.nodes.get(currentCity).get(start);
-    console.log(minutes);
-    return minutes;
-}
-function main(input) {
-    const lines = input.trim().split('\n');
-    const [numCities, startCity] = lines[0].split(' ');
-    const graph = new Graph();
-
-    for (let i = 1; i < lines.length; i++) {
-        const [city1, city2, time] = lines[i].split(' ');
-        if (!graph.nodes.has(city1)) graph.addNode(city1);
-        if (!graph.nodes.has(city2)) graph.addNode(city2);
-        graph.addEdge(city1, city2, parseInt(time));
-    }
-
-    const shortestPath = findShortestPath(graph, startCity);
-    console.log(shortestPath);
-}
-
-
-input = `16 Warszawa
+16 Warszawa
 Białystok Olsztyn 210
 Białystok Warszawa 132
 Białystok Lublin 226
@@ -176,6 +118,4 @@ Katowice Kraków 67
 Katowice Rzeszów 148
 Kielce Kraków 100
 Kielce Rzeszów 145
-Kraków Rzeszów 112`
-
-main(input);
+Kraków Rzeszów 112
